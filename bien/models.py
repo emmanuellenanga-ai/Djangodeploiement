@@ -1,5 +1,6 @@
 from django.db import models
 from proprietaire.models import Proprietaire
+from django.contrib.auth.models import AbstractUser
 
 
 class Categorie(models.Model):
@@ -42,4 +43,16 @@ class Bien(models.Model):
 
     def _str_(self):
         return self.titre
+
+class DemandeVisite(models.Model):
+    bien = models.ForeignKey(Bien, on_delete=models.CASCADE, related_name='demandes_visite')
+    nom_visiteur = models.CharField(max_length=100)
+    email_visiteur = models.EmailField()
+    telephone_visiteur = models.CharField(max_length=20)
+    date_visite_souhaitee = models.DateTimeField()
+    message = models.TextField(blank=True)
+    cree_le = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Demande pour {self.bien.titre} par {self.nom_visiteur}"
 

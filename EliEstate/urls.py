@@ -26,6 +26,12 @@ from bien.views import (
 from locataire.views import LocataireViewSet
 from contrat.views import ContratViewSet
 from paiement.views import PaiementViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from django.urls import path
+from bien.views import DemandeVisiteCreateView
  
 router_proprietaire = routers.SimpleRouter()
 router_proprietaire.register('proprietaire', ProprietaireViewSet, basename='proprietaire')
@@ -55,6 +61,8 @@ urlpatterns = [
     path('api/',include(router_contrat.urls)),
     path('api/',include(router_paiement.urls)),
     path('api/dashboard',include('dashboard.urls')),
-    
+    path('api/auth/login/',   TokenObtainPairView.as_view(),  name='token_obtain'),
+    path('api/auth/refresh/', TokenRefreshView.as_view(),     name='token_refresh'),
+    path('api/demande-visite/', DemandeVisiteCreateView.as_view(), name='demande-visite-create')
 
 ]
